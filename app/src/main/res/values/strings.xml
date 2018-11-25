@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">DYS</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">DYS</string>
+    <string name="nav_header_subtitle">대학생활에 유용한 소프트웨어</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">DYS</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_main">DYS</string>
+    <string name="title_timetable">시간표</string>
+    <string name="title_credit">만든 사람들</string>
 </resources>
