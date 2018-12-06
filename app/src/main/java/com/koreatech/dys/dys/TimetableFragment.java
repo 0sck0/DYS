@@ -4,17 +4,18 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,9 +53,7 @@ public class TimetableFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // 날짜 표시
-        Calendar cal = Calendar.getInstance();
-        weekPrintToTimeTable(cal);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -62,8 +61,14 @@ public class TimetableFragment extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().setTitle(R.string.title_timetable);
 
+        View v = inflater.inflate(R.layout.fragment_timetable, container, false);
+
+        // 날짜 표시
+        Calendar cal = Calendar.getInstance();
+        weekPrintToTimeTable(cal, v);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_timetable, container, false);
+        return v;
     }
 
     public interface OnFragmentInteractionListener {
@@ -71,8 +76,27 @@ public class TimetableFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_timetable, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_add:
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction  = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, TimetableSelectedFragment.newInstance("", ""));
+                fragmentTransaction.commit();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     // 날짜 표기하기
-    public void weekPrintToTimeTable(Calendar mCalendar) {
+    public void weekPrintToTimeTable(Calendar mCalendar, View v) {
         Date date = new Date();
         Date[] thisWeek = new Date[5];
         String[] thisWeekString = new String[5];
@@ -107,11 +131,11 @@ public class TimetableFragment extends Fragment {
 
         // TextView에 넣기
         TextView[] days = new TextView[5];
-        days[0] = (TextView)getView().findViewById(R.id.mondayDate);
-        days[1] = (TextView)getView().findViewById(R.id.tusedayDate);
-        days[2] = (TextView)getView().findViewById(R.id.wednesdayDate);
-        days[3] = (TextView)getView().findViewById(R.id.thursdayDate);
-        days[4] = (TextView)getView().findViewById(R.id.fridayDate);
+        days[0] = (TextView)v.findViewById(R.id.mondayDate);
+        days[1] = (TextView)v.findViewById(R.id.tusedayDate);
+        days[2] = (TextView)v.findViewById(R.id.wednesdayDate);
+        days[3] = (TextView)v.findViewById(R.id.thursdayDate);
+        days[4] = (TextView)v.findViewById(R.id.fridayDate);
         for(int i=0; i<5; i++) {
             days[i].setText(thisWeekString[i]);
         }

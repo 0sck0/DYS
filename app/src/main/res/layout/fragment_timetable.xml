@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,7 +34,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b" />
+                    android:background="@color/colorDYS" />
 
                 <!-- 월 -->
                 <TextView
@@ -100,7 +99,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b" />
+                    android:background="@color/colorDYS" />
 
                 <!-- 월 날짜 -->
                 <TextView
@@ -161,7 +160,7 @@
 
             <TableRow
                 android:layout_height="1dp"
-                android:background="#3fb36b">
+                android:background="@color/colorDYS">
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -190,7 +189,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b" />
+                    android:background="@color/colorDYS" />
 
                 <TextView
                     android:id="@+id/monday0"
@@ -247,7 +246,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -305,7 +304,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -363,7 +362,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -421,7 +420,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -479,7 +478,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -537,7 +536,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -595,7 +594,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -653,7 +652,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -711,7 +710,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
@@ -769,7 +768,7 @@
                 <TextView
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="#3fb36b"
+                    android:background="@color/colorDYS"
                     android:text="" />
 
                 <TextView
