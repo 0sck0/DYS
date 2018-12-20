@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-public class MainFragment extends Fragment implements View.OnClickListener {
+public class MainFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,51 +69,51 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         studyPlanner = (FrameLayout) view.findViewById(R.id.tile_study_planner);
         reminder = (FrameLayout) view.findViewById(R.id.tile_reminder);
 
-        schedule.setOnClickListener(this);
-        timetable.setOnClickListener(this);
-        studyPlanner.setOnClickListener(this);
-        reminder.setOnClickListener(this);
+//        schedule.setOnClickListener(this);
+//        timetable.setOnClickListener(this);
+//        studyPlanner.setOnClickListener(this);
+//        reminder.setOnClickListener(this);
 
-//        schedule.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.container, todoFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
-//        timetable.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.container, timeFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
-//        studyPlanner.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.container, studyFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
-//        reminder.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.container, reminderFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-//            }
-//        });
+        schedule.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.container, todoFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        timetable.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.container, timeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        studyPlanner.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.container, studyFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        reminder.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.container, reminderFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         getActivity().setTitle(R.string.title_main);
 
@@ -124,24 +124,5 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-        if (id == R.id.tile_schedule) {
-            transaction.replace(R.id.container, todoFragment);
-        } else if (id == R.id.tile_timetable) {
-            transaction.replace(R.id.container, timeFragment);
-        } else if (id == R.id.tile_study_planner) {
-            transaction.replace(R.id.container, studyFragment);
-        } else if (id == R.id.tile_reminder) {
-            transaction.replace(R.id.container, reminderFragment);
-        }
-
-        transaction.addToBackStack(null);
-        transaction.commit();
     }
 }

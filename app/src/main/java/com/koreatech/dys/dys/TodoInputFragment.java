@@ -1,8 +1,10 @@
 package com.koreatech.dys.dys;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +27,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static android.app.Activity.RESULT_CANCELED;
+import static android.content.Context.ALARM_SERVICE;
 
 public class TodoInputFragment extends Fragment {
     private String total_data;
@@ -56,7 +61,8 @@ public class TodoInputFragment extends Fragment {
     private int switch1 = 0;
     static final int TIME_DIALOG_ID = 1;
     static final int DATE_DIALOG_ID = 0;
-
+    private AlarmManager alarm_manager;
+    private PendingIntent pendingIntent;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -93,9 +99,12 @@ public class TodoInputFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle("일정 입력");
         super.onCreate(savedInstanceState);
-        getActivity().setContentView(R.layout.fragment_todo_input);
+
+        View view = inflater.inflate(R.layout.fragment_todo_input, container, false);
+
+        alarm_manager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        final Intent my_intent = new Intent(getActivity().getApplicationContext(), Alarm_Reciver.class);
         todoDB = new DBclass(getActivity().getApplicationContext());
         try {
             db = todoDB.getWritableDatabase();
@@ -105,20 +114,20 @@ public class TodoInputFragment extends Fragment {
         }
         Intent intent  = getActivity().getIntent();
         //텍스트로 선택한 일정 보여주는 변수
-        sDateDisplay = (TextView)getView().findViewById(R.id.start_date_todo);
-        eDateDisplay = (TextView)getView().findViewById(R.id.end_date_todo);
+        sDateDisplay = (TextView) view.findViewById(R.id.start_date_todo);
+        eDateDisplay = (TextView) view.findViewById(R.id.end_date_todo);
 
         //날짜 선택하는 버튼
-        sPickDate = (Button)getView().findViewById(R.id.start_datepicker);
-        ePickDate = (Button)getView().findViewById(R.id.end_datepicker);
+        sPickDate = (Button) view.findViewById(R.id.start_datepicker);
+        ePickDate = (Button) view.findViewById(R.id.end_datepicker);
         //알림 스위치와 스위치 상태를 표시해주는 텍스트뷰
-        ring_switch = (Switch)getView().findViewById(R.id.switch_todo);
-        ring_switch_on_text = (TextView)getView().findViewById(R.id.switch_condition_todo);
-        title_todo = (EditText)getView().findViewById(R.id.title_todo);
-        content_todo = (EditText)getView().findViewById((R.id.content_todo));
+        ring_switch = (Switch) view.findViewById(R.id.switch_todo);
+        ring_switch_on_text = (TextView) view.findViewById(R.id.switch_condition_todo);
+        title_todo = (EditText) view.findViewById(R.id.title_todo);
+        content_todo = (EditText) view.findViewById((R.id.content_todo));
         //현재 액티비티를 취소하거나 저장하는 버튼 //온클릭 리스너 만들어주고, 거기에는 인텐트 처리와 파일처리 코드를 넣을 예정.
-        cancel_todo = (Button)getView().findViewById(R.id.cancel_todo);
-        save_todo = (Button)getView().findViewById(R.id.save_todo);
+        cancel_todo = (Button) view.findViewById(R.id.cancel_todo);
+        save_todo = (Button) view.findViewById(R.id.save_todo);
         //날짜 변경 버튼 이벤트 리스너
         sPickDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v)
@@ -142,15 +151,18 @@ public class TodoInputFragment extends Fragment {
             }
         });
         //취소 버튼과 저장 버튼 이벤트 리스너 설정
-        cancel_todo = (Button)getView().findViewById(R.id.cancel_todo);
+        cancel_todo = (Button) view.findViewById(R.id.cancel_todo);
         cancel_todo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().setResult(RESULT_CANCELED);
-                getActivity().finish();
+//                getActivity().finish();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(TodoInputFragment.this).commit();
+                fragmentManager.popBackStack();
             }
         });
-        save_todo = (Button)getView().findViewById(R.id.save_todo);
+        save_todo = (Button) view.findViewById(R.id.save_todo);
         save_todo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,6 +176,12 @@ public class TodoInputFragment extends Fragment {
                         //수정하는경우
 
                         if(title_todo.getText().toString().equals(recieve_title))
+                        {
+                            if(!start_date.equals(cursor.getString(1)))
+                            {
+                                stopAlarm();
+                                goAlarm();
+                            }
                             db.execSQL("UPDATE todo " +
                                     "SET title = '" + cur_title +
                                     "', start_date = '" + start_date +
@@ -171,15 +189,24 @@ public class TodoInputFragment extends Fragment {
                                     "', alarm = '" + ring_switch +
                                     "', content = '" + content +
                                     "' WHERE title = '" + recieve_title + "';");
+                        }
                         else
                         {
+                            if(!start_date.equals(cursor.getString(1)))
+                            {
+                                stopAlarm();
+                                goAlarm();
+                            }
                             db.execSQL("DELETE FROM todo " +
                                     "WHERE title = '" + recieve_title + "';");
                             db.execSQL("INSERT INTO todo " +
                                     "VALUES (null, '" + cur_title + "', '" + start_date + "', '"
                                     + end_date + "', '" + ring_switch + "', '" + content + "');");
                         }
-                        getActivity().finish();
+//                        getActivity().finish();
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        fragmentManager.beginTransaction().remove(TodoInputFragment.this).commit();
+                        fragmentManager.popBackStack();
                     } else {  //수정이 아닌, 새로운 일정을 추가하는 경우는 데이터베이스에 추가
                         cursor = db.rawQuery("SELECT * FROM todo " +
                                 "WHERE title='" + cur_title + "';", null);
@@ -188,7 +215,11 @@ public class TodoInputFragment extends Fragment {
                             db.execSQL("INSERT INTO todo " +
                                     "VALUES (null, '" + cur_title + "', '" + start_date + "', '"
                                     + end_date + "', '" + ring_switch + "', '" + content + "');");
-                            getActivity().finish();
+                            goAlarm();
+//                            getActivity().finish();
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction().remove(TodoInputFragment.this).commit();
+                            fragmentManager.popBackStack();
                         }
                         else
                         {
@@ -203,6 +234,11 @@ public class TodoInputFragment extends Fragment {
                                             String start_date = sDateDisplay.getText().toString();
                                             String end_date = eDateDisplay.getText().toString();
                                             String ring_switch = ring_switch_on_text.getText().toString();
+                                            if(!start_date.equals(cursor.getString(1)))
+                                            {
+                                                stopAlarm();
+                                                goAlarm();
+                                            }
                                             db.execSQL("UPDATE todo " +
                                                     "SET title = '" + cur_title +
                                                     "', start_date = '" + start_date +
@@ -256,32 +292,34 @@ public class TodoInputFragment extends Fragment {
             //처음 날짜 정할때 오늘 날짜로 초기화하는 함수
             set_date();
         }
-        return inflater.inflate(R.layout.fragment_todo_input, container, false);
+        getActivity().setTitle("일정 입력");
+
+        return view;
     }
 
     private boolean check_data() {
-            boolean sw = false;
-            if (title_todo.getText().toString().isEmpty()) {
-                Toast.makeText(getActivity().getApplicationContext(), "제목를 입력해주십시오.", Toast.LENGTH_LONG).show();
-                sw = true;
-            }
-            if (sDateDisplay.getText().toString().isEmpty()) {
-                Toast.makeText(getActivity().getApplicationContext(), "시작 날짜를 입력해주십시오.", Toast.LENGTH_LONG).show();
-                sw = true;
-            }
-            if (eDateDisplay.getText().toString().isEmpty()) {
-                Toast.makeText(getActivity().getApplicationContext(), "종료 날짜를 입력해주십시오.", Toast.LENGTH_LONG).show();
-                sw = true;
-            }
-            if (ring_switch_on_text.getText().toString().isEmpty()) {
-                Toast.makeText(getActivity().getApplicationContext(), "알림을 설정해주십시오.", Toast.LENGTH_LONG).show();
-                sw = true;
-            }
-            if (content_todo.getText().toString().isEmpty()) {
-                Toast.makeText(getActivity().getApplicationContext(), "내용을 입력해주십시오.", Toast.LENGTH_LONG).show();
-                sw = true;
-            }
-            return sw;
+        boolean sw = false;
+        if (title_todo.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "제목를 입력해주십시오.", Toast.LENGTH_LONG).show();
+            sw = true;
+        }
+        if (sDateDisplay.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "시작 날짜를 입력해주십시오.", Toast.LENGTH_LONG).show();
+            sw = true;
+        }
+        if (eDateDisplay.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "종료 날짜를 입력해주십시오.", Toast.LENGTH_LONG).show();
+            sw = true;
+        }
+        if (ring_switch_on_text.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "알림을 설정해주십시오.", Toast.LENGTH_LONG).show();
+            sw = true;
+        }
+        if (content_todo.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity().getApplicationContext(), "내용을 입력해주십시오.", Toast.LENGTH_LONG).show();
+            sw = true;
+        }
+        return sw;
     }
     //처음 날짜 정할때 오늘 날짜로 초기화하는 코드.
     private void set_date()
@@ -415,6 +453,42 @@ public class TodoInputFragment extends Fragment {
             }
         }
         return null;
+    }
+    private void goAlarm()
+    {
+        Intent my_intent = new Intent(getActivity().getApplicationContext(), Alarm_Reciver.class);
+        my_intent.putExtra("state","alarm on");
+        Calendar calendar = new GregorianCalendar();
+
+        Log.d("cur_cal y, m, d, h, s", ":" + String.valueOf(eYear) +
+                String.valueOf(eMonth) +
+                String.valueOf(eDay) +
+                String.valueOf(ehour) +
+                String.valueOf(eminute));
+
+        calendar.set(eYear, eMonth, eDay, ehour, eminute-4);
+        Log.d("cur_cal y, m, d, h, s", ":" + String.valueOf(calendar.get(Calendar.YEAR)) +
+                String.valueOf(calendar.get(Calendar.MONTH)) +
+                String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) +
+                String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) +
+                String.valueOf(calendar.get(Calendar.MINUTE)));
+        pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
+                0, my_intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                pendingIntent);
+    }
+    private void stopAlarm()
+    {
+
+        Intent my_intent = new Intent(getActivity().getApplicationContext(),  Alarm_Reciver.class);
+        my_intent.putExtra("state","alarm off");
+        pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, my_intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarm_manager.cancel(pendingIntent);
+
+        // 알람취소
+        getActivity().sendBroadcast(my_intent);
     }
 }
 

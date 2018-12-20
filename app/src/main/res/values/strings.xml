@@ -10,6 +10,9 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_main">DYS</string>
+    <string name="title_todo">할 일</string>
     <string name="title_timetable">시간표</string>
+    <string name="title_study">스터디 플래너</string>
+    <string name="title_reminder">리마인더</string>
     <string name="title_credit">만든 사람들</string>
 </resources>

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
@@ -63,12 +64,14 @@ public class ReminderFragment extends Fragment
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_reminder, container, false);
 
         reminderDB = new DBclass(getActivity().getApplicationContext());
         try {
@@ -86,6 +89,8 @@ public class ReminderFragment extends Fragment
         //item들이 길게 눌렸을 때 반응하는 이벤트리스너 또한 설정하는데, 이때는 implements로 Adapter
         // View.OnItemLongClickListener를 해줬기 때문에 이벤트리스너의 인자에는 this가 들어간다.
         m_ListView.setOnItemLongClickListener(this);
+
+        getActivity().setTitle(R.string.title_reminder);
 
         return view;
     }
@@ -149,14 +154,24 @@ public class ReminderFragment extends Fragment
 
     //기본 화면에서 item들을 짧게 눌렀을 때 호출되는 함수이다. url을 이용하여 웹사이트를 연결한다.
     private AdapterView.OnItemClickListener onClickListItem = new AdapterView.OnItemClickListener() {
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // 클릭 이벤트 발생시 수정 작업으로써, intent호출하여 Reminder_input실행
-            Intent reminderintent = new Intent(getActivity().getApplicationContext(), Reminder_input_Fragment.class);
-            reminderintent.putExtra("isModify", true);
-            reminderintent.putExtra("title", adapter.getCursor().getString(2));
-            startActivity(reminderintent);
+//            // 클릭 이벤트 발생시 수정 작업으로써, intent호출하여 Reminder_input실행
+//            Intent reminderintent = new Intent(getActivity().getApplicationContext(), Reminder_input_Fragment.class);
+//            reminderintent.putExtra("isModify", true);
+//            reminderintent.putExtra("title", adapter.getCursor().getString(2));
+//            startActivity(reminderintent);
+
+            Fragment fragment = new Reminder_input_Fragment();
+            Bundle bundle = new Bundle(2);
+            bundle.putBoolean("isModify", true);
+            bundle.putString("title", adapter.getCursor().getString(2));
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     };
 
@@ -164,7 +179,6 @@ public class ReminderFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_add_reminder, menu);
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     //기본 화면에서의 옵션 메뉴를 눌렀을때 즉, add를 눌렀을 때 Reminder_input를 호출하는 함수이다.
@@ -172,10 +186,20 @@ public class ReminderFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_reminder:
-                //서브 액티비티 호출, 인텐트로 데이터 소통,
-                Intent reminderintent = new Intent(getActivity().getApplicationContext(), Reminder_input_Fragment.class);
-                reminderintent.putExtra("isModify", false);
-                startActivity(reminderintent);
+//                //서브 액티비티 호출, 인텐트로 데이터 소통,
+//                Intent reminderintent = new Intent(getActivity().getApplicationContext(), Reminder_input_Fragment.class);
+//                reminderintent.putExtra("isModify", false);
+//                startActivity(reminderintent);
+
+                Fragment fragment = new Reminder_input_Fragment();
+                Bundle bundle = new Bundle(1);
+                bundle.putBoolean("isModify", false);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             default:
                 return super.onOptionsItemSelected(item);

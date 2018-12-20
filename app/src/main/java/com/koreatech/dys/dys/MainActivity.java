@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +22,10 @@ public class MainActivity extends AppCompatActivity
     private Fragment studyFragment;
     private Fragment reminderFragment;
     private Fragment creditFragment;
+
+    // 뒤로가기 버튼을 두 번 누를 시 종료를 위한 시간 변수
+    private final long FINISH_INTERVAL_TIME = 2000;
+    private long backPressedTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +60,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        long tempTime = System.currentTimeMillis();
+        long intervalTime = tempTime - backPressedTime;
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             for (Fragment fragment: getSupportFragmentManager().getFragments()) {
                 if (fragment.isVisible()) {
                     if(fragment instanceof MainFragment)
-                        finish();
+                        if (0 <= intervalTime && FINISH_INTERVAL_TIME >= intervalTime) {
+                            finish();
+                        } else {
+                            backPressedTime = tempTime;
+                            Toast.makeText(this, "종료하시려면 뒤로 버튼을 한 번 더 누르세요.", Toast.LENGTH_SHORT).show();
+                        }
                     else
                         super.onBackPressed();
                 }

@@ -1,8 +1,10 @@
 package com.koreatech.dys.dys;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +28,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class Reminder_input_Fragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -69,8 +74,8 @@ public class Reminder_input_Fragment extends Fragment {
     private int switch1 = 0;
     static final int TIME_DIALOG_ID = 1;
     static final int DATE_DIALOG_ID = 0;
-    private String path_reminder;
-    private String filename;
+    private AlarmManager alarm_manager;
+    private PendingIntent pendingIntent;
 
     public Reminder_input_Fragment() {
         // Required empty public constructor
@@ -98,7 +103,9 @@ public class Reminder_input_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_reminder_input, container, false);
+        alarm_manager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        final Intent my_intent = new Intent(getActivity().getApplicationContext(), Alarm_Reciver.class);
 
         reminderDB = new DBclass(getActivity().getApplicationContext());
         try {
@@ -174,14 +181,23 @@ public class Reminder_input_Fragment extends Fragment {
                     if (isModify) {
                         //수정하는경우
 
-                        if(title_reminder.getText().toString().equals(recieve_title))
+                        if(title_reminder.getText().toString().equals(recieve_title)) {
+                            if (!end_date.equals(cursor.getString(2))) {
+                                stopAlarm();
+                                goAlarm();
+                            }
                             db.execSQL("UPDATE reminder " +
                                     "SET title = '" + cur_title +
                                     "', memo = '" + memo +
                                     "', end_date = '" + end_date +
                                     "' WHERE title = '" + recieve_title + "';");
+                        }
                         else
                         {
+                            if (!end_date.equals(cursor.getString(2))) {
+                                stopAlarm();
+                                goAlarm();
+                            }
                             db.execSQL("DELETE FROM reminder " +
                                     "WHERE title = '" + recieve_title + "';");
                             db.execSQL("INSERT INTO reminder " +
@@ -199,6 +215,7 @@ public class Reminder_input_Fragment extends Fragment {
                             db.execSQL("INSERT INTO reminder " +
                                     "VALUES (null, '" + cur_title + "', '" + memo + "', '"
                                     + end_date + "');");
+                            goAlarm();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                             fragmentManager.beginTransaction().remove(Reminder_input_Fragment.this).commit();
                             fragmentManager.popBackStack();
@@ -214,6 +231,11 @@ public class Reminder_input_Fragment extends Fragment {
                                             String title = title_reminder.getText().toString();
                                             String memo = memo_reminder.getText().toString();
                                             String end_date = eDateDisplay.getText().toString();
+                                            if(!end_date.equals(cursor.getString(2)))
+                                            {
+                                                stopAlarm();
+                                                goAlarm();
+                                            }
                                             db.execSQL("UPDATE reminder " +
                                                     "SET title = '" + title +
                                                     "', memo = '" + memo +
@@ -243,6 +265,8 @@ public class Reminder_input_Fragment extends Fragment {
             }
         });
 
+        getActivity().setTitle("리마인더 입력");
+
         return view;
     }
     private boolean check_data() {
@@ -259,7 +283,7 @@ public class Reminder_input_Fragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(), "종료 날짜를 입력해주십시오.", Toast.LENGTH_LONG).show();
             sw = true;
         }
-            return sw;
+        return sw;
     }
 
     //처음 날짜 정할때 오늘 날짜로 초기화하는 코드.
@@ -278,15 +302,15 @@ public class Reminder_input_Fragment extends Fragment {
     //위의 날짜들의 데이터를 텍스트뷰에 출력
     private void updateDate()
     {
-            eDateDisplay.setText(
-                    new StringBuilder()
-                            // Month is 0 based so add 1
-                            .append(eYear).append(" ")
-                            .append(eMonth + 1).append("/")
-                            .append(eDay).append("/")
-                            .append(pad(ehour)).append(":")
-                            .append(pad(eminute)));
-            getActivity().showDialog(TIME_DIALOG_ID);
+        eDateDisplay.setText(
+                new StringBuilder()
+                        // Month is 0 based so add 1
+                        .append(eYear).append(" ")
+                        .append(eMonth + 1).append("/")
+                        .append(eDay).append("/")
+                        .append(pad(ehour)).append(":")
+                        .append(pad(eminute)));
+        getActivity().showDialog(TIME_DIALOG_ID);
 
     }
 
@@ -308,10 +332,10 @@ public class Reminder_input_Fragment extends Fragment {
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
 
-                        eYear = year;
-                        eMonth = monthOfYear;
-                        eDay = dayOfMonth;
-                        updateDate();
+                    eYear = year;
+                    eMonth = monthOfYear;
+                    eDay = dayOfMonth;
+                    updateDate();
                 }
             };
 
@@ -321,28 +345,64 @@ public class Reminder_input_Fragment extends Fragment {
             new TimePickerDialog.OnTimeSetListener() {
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                        ehour = hourOfDay;
-                        eminute = minute;
-                        updateDate();
+                    ehour = hourOfDay;
+                    eminute = minute;
+                    updateDate();
                 }
             };
 
-//    @Override
+    //    @Override
     protected Dialog onCreateDialog(int id) {
         Log.v(Integer.toString(id), " : 1");
 
         switch (id) {
             case DATE_DIALOG_ID: {
-                    return new DatePickerDialog(getActivity(),
-                            mDateSetListener,
-                            eYear, eMonth, eDay);
+                return new DatePickerDialog(getActivity(),
+                        mDateSetListener,
+                        eYear, eMonth, eDay);
             }
             case TIME_DIALOG_ID: {
-                    return new TimePickerDialog(getActivity(),
-                            mTimeSetListener, ehour, eminute, false);
+                return new TimePickerDialog(getActivity(),
+                        mTimeSetListener, ehour, eminute, false);
             }
         }
         return null;
+    }
+    private void goAlarm()
+    {
+        Intent my_intent = new Intent(getActivity().getApplicationContext(), Alarm_Reciver.class);
+        my_intent.putExtra("state","alarm on");
+        Calendar calendar = new GregorianCalendar();
+
+        Log.d("cur_cal y, m, d, h, s", ":" + String.valueOf(eYear) +
+                String.valueOf(eMonth) +
+                String.valueOf(eDay) +
+                String.valueOf(ehour) +
+                String.valueOf(eminute));
+
+        calendar.set(eYear, eMonth, eDay, ehour, eminute-4);
+        Log.d("cur_cal y, m, d, h, s", ":" + String.valueOf(calendar.get(Calendar.YEAR)) +
+                String.valueOf(calendar.get(Calendar.MONTH)) +
+                String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) +
+                String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) +
+                String.valueOf(calendar.get(Calendar.MINUTE)));
+        pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(),
+                0, my_intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                pendingIntent);
+    }
+    private void stopAlarm()
+    {
+
+        Intent my_intent = new Intent(getActivity().getApplicationContext(),  Alarm_Reciver.class);
+        my_intent.putExtra("state","alarm off");
+        pendingIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, my_intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        alarm_manager.cancel(pendingIntent);
+
+        // 알람취소
+        getActivity().sendBroadcast(my_intent);
     }
 
 }

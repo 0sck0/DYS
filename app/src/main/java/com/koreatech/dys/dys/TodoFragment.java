@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class TodoFragment extends Fragment
     private DBclass todoDB;
     private SQLiteDatabase db;
     private Cursor cursor;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,11 +71,9 @@ public class TodoFragment extends Fragment
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        getActivity().setTitle("일정");
-        super.onCreate(savedInstanceState);
-        getActivity().setContentView(R.layout.fragment_todo);
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_todo, container, false);
+
         todoDB = new DBclass(getActivity().getApplicationContext());
         try {
             db = todoDB.getWritableDatabase();
@@ -81,9 +81,9 @@ public class TodoFragment extends Fragment
             db = todoDB.getReadableDatabase();
         }
         //xml파일에는 id가 list인 리스트뷰가 코딩되어 있으므로 그 뷰를 변수에 이어준다.
-        m_ListView = (ListView) getActivity().findViewById(R.id.list_todo);
+        m_ListView = (ListView) view.findViewById(R.id.list_todo);
         //처음 앱이 실행될때, 정해진 경로의 폴더(나는 내부저장소로 정햇다)에 있는 파일들을 File 배열
-        m_ListView = (ListView) getActivity().findViewById(R.id.list_todo);
+        m_ListView = (ListView) view.findViewById(R.id.list_todo);
         refresh_list();
         //이때 item들을 눌러서 웹사이트를 연결하기 위한 이벤트리스너를 설정한다.
         m_ListView.setOnItemClickListener(onClickListItem);
@@ -91,7 +91,9 @@ public class TodoFragment extends Fragment
         // View.OnItemLongClickListener를 해줬기 때문에 이벤트리스너의 인자에는 this가 들어간다.
         m_ListView.setOnItemLongClickListener(this);
 
-        return inflater.inflate(R.layout.fragment_todo, container, false);
+        getActivity().setTitle(R.string.title_todo);
+
+        return view;
     }
 
 
@@ -155,11 +157,22 @@ public class TodoFragment extends Fragment
     private AdapterView.OnItemClickListener onClickListItem = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // 클릭 이벤트 발생시 수정 작업으로써, intent호출하여 Reminder_input실행
-            Intent todointent = new Intent(getActivity().getApplicationContext(), TodoInputFragment.class);
-            todointent.putExtra("isModify", true);
-            todointent.putExtra("title", adapter.getCursor().getString(2));
-            startActivity(todointent);
+//            // 클릭 이벤트 발생시 수정 작업으로써, intent호출하여 Reminder_input실행
+//            Intent todointent = new Intent(getActivity().getApplicationContext(), TodoInputFragment.class);
+//            todointent.putExtra("isModify", true);
+//            todointent.putExtra("title", adapter.getCursor().getString(2));
+//            startActivity(todointent);
+
+            Fragment fragment = new TodoInputFragment();
+            Bundle bundle = new Bundle(2);
+            bundle.putBoolean("isModify", true);
+            bundle.putString("title", adapter.getCursor().getString(2));
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
     };
     //기본 화면에서의 옵션 메뉴를 생성하는 함수이다.
@@ -173,10 +186,20 @@ public class TodoFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_todo:
-                //서브 액티비티 호출, 인텐트로 데이터 소통,
-                Intent reminderintent = new Intent(getActivity().getApplicationContext(), TodoInputFragment.class);
-                reminderintent.putExtra("isModify", false);
-                startActivity(reminderintent);
+//                //서브 액티비티 호출, 인텐트로 데이터 소통,
+//                Intent reminderintent = new Intent(getActivity().getApplicationContext(), TodoInputFragment.class);
+//                reminderintent.putExtra("isModify", false);
+//                startActivity(reminderintent);
+
+                Fragment fragment = new TodoInputFragment();
+                Bundle bundle = new Bundle(1);
+                bundle.putBoolean("isModify", false);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             default:
                 return super.onOptionsItemSelected(item);

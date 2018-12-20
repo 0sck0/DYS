@@ -17,8 +17,7 @@
         <FrameLayout
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:id="@+id/tile_schedule"
-            android:onClick="onClick">
+            android:id="@+id/tile_schedule">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -51,8 +50,7 @@
         <FrameLayout
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:id="@+id/tile_timetable"
-            android:onClick="onClick">
+            android:id="@+id/tile_timetable">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -85,8 +83,7 @@
         <FrameLayout
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:id="@+id/tile_study_planner"
-            android:onClick="onClick">
+            android:id="@+id/tile_study_planner">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -124,8 +121,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="#41ba6f"
-                android:onClick="onClick"/>
+                android:src="#41ba6f"/>
 
             <FrameLayout
                 android:layout_width="80dp"

@@ -105,18 +105,17 @@ public class StudyPlanner extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup contatiner,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.fragment_main, contatiner, false);
+        View view = inflater.inflate(R.layout.fragment_study, contatiner, false);
 
-
-        setHasOptionsMenu(true);
-        getActivity().setTitle("Study Planner");
-        getActivity().setContentView(R.layout.fragment_study);
+        getActivity().setTitle(R.string.title_study);
         alarm_manager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
         Intent my_intent = new Intent(getActivity().getApplicationContext(), Alarm_Reciver.class);
         studyDB = new DBclass(getActivity().getApplicationContext());
@@ -133,7 +132,7 @@ public class StudyPlanner extends Fragment {
         List<EventDay> events = new ArrayList<>();
         CalendarView calendarView;
         onSetIcon(events);
-        calendarView = getActivity().findViewById(R.id.calendarView);
+        calendarView = view.findViewById(R.id.calendarView);
 
         //처음 날짜를 오늘로 초기화하는 함수
         set_date();
@@ -169,14 +168,14 @@ public class StudyPlanner extends Fragment {
         });
 
         //입력창 선언******************************************************************************
-        study_input = (LinearLayout) getActivity().findViewById(R.id.study_input);
-        sTimeDisplay = (TextView) getActivity().findViewById(R.id.start_time_study);
-        eTimeDisplay = (TextView) getActivity().findViewById(R.id.end_time_study);
-        title_study = (EditText) getActivity().findViewById(R.id.title_study);
-        content_study = (EditText) getActivity().findViewById((R.id.content_study));
+        study_input = (LinearLayout) view.findViewById(R.id.study_input);
+        sTimeDisplay = (TextView) view.findViewById(R.id.start_time_study);
+        eTimeDisplay = (TextView) view.findViewById(R.id.end_time_study);
+        title_study = (EditText) view.findViewById(R.id.title_study);
+        content_study = (EditText) view.findViewById((R.id.content_study));
 
         //현재 액티비티를 취소하거나 저장하는 버튼 //온클릭 리스너 만들어주고, 거기에는 인텐트 처리와 파일처리 코드를 넣을 예정.
-        cancel_study = (Button) getActivity().findViewById(R.id.cancel_study);
+        cancel_study = (Button) view.findViewById(R.id.cancel_study);
         cancel_study.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,7 +183,7 @@ public class StudyPlanner extends Fragment {
                 study_input.setVisibility(View.GONE);
             }
         });
-        save_study = (Button) getActivity().findViewById(R.id.save_study);
+        save_study = (Button) view.findViewById(R.id.save_study);
         save_study.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,7 +239,7 @@ public class StudyPlanner extends Fragment {
         });
 
         //시간 선택하는 버튼
-        sPickTime = (Button) getActivity().findViewById(R.id.start_timepicker);
+        sPickTime = (Button) view.findViewById(R.id.start_timepicker);
         sPickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -248,7 +247,7 @@ public class StudyPlanner extends Fragment {
                 getActivity().showDialog(TIME_DIALOG_ID);
             }
         });
-        ePickTime = (Button) getActivity().findViewById(R.id.end_timepicker);
+        ePickTime = (Button) view.findViewById(R.id.end_timepicker);
         ePickTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -258,8 +257,8 @@ public class StudyPlanner extends Fragment {
         });
 
         //알림 스위치와 스위치 상태를 표시해주는 텍스트뷰
-        ring_switch = (Switch) getActivity().findViewById(R.id.switch_study);
-        ring_switch_on_text = (TextView) getActivity().findViewById(R.id.switch_condition_study);
+        ring_switch = (Switch) view.findViewById(R.id.switch_study);
+        ring_switch_on_text = (TextView) view.findViewById(R.id.switch_condition_study);
         //스위치 버튼 이벤트 리스너
         ring_switch.setOnClickListener(new View.OnClickListener() {
             @Override
