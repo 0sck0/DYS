@@ -158,8 +158,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="#41ba6f"
-                android:onClick="onClick"/>
+                android:src="#41ba6f"/>
 
             <FrameLayout
                 android:layout_width="80dp"
@@ -192,8 +191,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="#DDDDDD"
-                android:onClick="onClick"/>
+                android:src="#DDDDDD"/>
 
             <FrameLayout
                 android:layout_width="80dp"

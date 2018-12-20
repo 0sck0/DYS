@@ -23,6 +23,11 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
+        <receiver android:name=".Alarm_Reciver" />
+        <activity android:name=".AlarmActivity"/>
+        <service
+            android:name=".AlarmPlayService"
+            android:enabled="true"></service>
     </application>
 
 </manifest>

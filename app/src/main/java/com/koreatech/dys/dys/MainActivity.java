@@ -16,7 +16,10 @@ public class MainActivity extends AppCompatActivity
 
     // 프래그먼트 선언
     private Fragment mainFragment;
+    private Fragment todoFragment;
     private Fragment timeFragment;
+    private Fragment studyFragment;
+    private Fragment reminderFragment;
     private Fragment creditFragment;
 
     @Override
@@ -27,7 +30,10 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         mainFragment = new MainFragment();
+        todoFragment = new TodoFragment();
         timeFragment = new TimetableFragment();
+        studyFragment = new StudyPlanner();
+        reminderFragment = new ReminderFragment();
         creditFragment = new CreditFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -74,13 +80,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             transaction.replace(R.id.container, mainFragment);
         } else if (id == R.id.nav_schedule) {
-
+            transaction.replace(R.id.container, todoFragment);
         } else if (id == R.id.nav_timetable) {
             transaction.replace(R.id.container, timeFragment);
         } else if (id == R.id.nav_study_planner) {
-
+            transaction.replace(R.id.container, studyFragment);
         } else if (id == R.id.nav_reminder) {
-
+            transaction.replace(R.id.container, reminderFragment);
         } else if (id == R.id.nav_lab) {
 
         } else if (id == R.id.nav_settings) {

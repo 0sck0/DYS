@@ -20,16 +20,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private String mParam2;
 
     // 프래그먼트 선언
+    private Fragment todoFragment;
     private Fragment timeFragment;
-    private Fragment creditFragment;
+    private Fragment studyFragment;
+    private Fragment reminderFragment;
 
     // 각 버튼(FrameLayout) 선언
     FrameLayout schedule;
     FrameLayout timetable;
     FrameLayout studyPlanner;
     FrameLayout reminder;
-    FrameLayout lab;
-    FrameLayout settings;
 
     public MainFragment() {
         // Required empty public constructor
@@ -59,27 +59,29 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        todoFragment = new TodoFragment();
         timeFragment = new TimetableFragment();
-        creditFragment = new CreditFragment();
+        studyFragment = new StudyPlanner();
+        reminderFragment = new ReminderFragment();
 
         schedule = (FrameLayout) view.findViewById(R.id.tile_schedule);
         timetable = (FrameLayout) view.findViewById(R.id.tile_timetable);
         studyPlanner = (FrameLayout) view.findViewById(R.id.tile_study_planner);
         reminder = (FrameLayout) view.findViewById(R.id.tile_reminder);
-        lab = (FrameLayout) view.findViewById(R.id.tile_lab);
-        settings = (FrameLayout) view.findViewById(R.id.tile_settings);
 
         schedule.setOnClickListener(this);
         timetable.setOnClickListener(this);
         studyPlanner.setOnClickListener(this);
         reminder.setOnClickListener(this);
-        lab.setOnClickListener(this);
-        settings.setOnClickListener(this);
 
 //        schedule.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view) {
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //
+//                transaction.replace(R.id.container, todoFragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
 //            }
 //        });
 //        timetable.setOnClickListener(new View.OnClickListener(){
@@ -95,25 +97,21 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 //        studyPlanner.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view) {
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //
+//                transaction.replace(R.id.container, studyFragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
 //            }
 //        });
 //        reminder.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view) {
+//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
 //
-//            }
-//        });
-//        lab.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
-//        settings.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//
+//                transaction.replace(R.id.container, reminderFragment);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
 //            }
 //        });
 
@@ -134,17 +132,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         if (id == R.id.tile_schedule) {
-
+            transaction.replace(R.id.container, todoFragment);
         } else if (id == R.id.tile_timetable) {
             transaction.replace(R.id.container, timeFragment);
         } else if (id == R.id.tile_study_planner) {
-
+            transaction.replace(R.id.container, studyFragment);
         } else if (id == R.id.tile_reminder) {
-
-        } else if (id == R.id.tile_lab) {
-
-        } else if (id == R.id.tile_settings) {
-
+            transaction.replace(R.id.container, reminderFragment);
         }
 
         transaction.addToBackStack(null);
