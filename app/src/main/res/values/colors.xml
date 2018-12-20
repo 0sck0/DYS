@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorDYS">#41ba6f</color>
     <color name="colorDYSDark">#297345</color>
+    <color name="colorDYSGray">#DDDDDD</color>
 </resources>
