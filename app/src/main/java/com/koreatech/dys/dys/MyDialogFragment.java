@@ -1,18 +1,18 @@
 package com.koreatech.dys.dys;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 
 public class MyDialogFragment extends DialogFragment {
 
     private MyDialogListener myListener;
 
     public interface MyDialogListener {
-        public void myCallback(String cityName);
+        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogNegativeClick(DialogFragment dialog);
     }
 
     public MyDialogFragment() {
@@ -30,14 +30,18 @@ public class MyDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            myListener = (MyDialogListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement MyDialogListener");
+        }
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
 //        builder.setView(inflater.inflate(R.layout.fragment_dialog, null))
 //                .setPositiveButton(R.string.search, new DialogInterface.OnClickListener() {
 //                    @Override

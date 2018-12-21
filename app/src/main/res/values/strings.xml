@@ -14,5 +14,6 @@
     <string name="title_timetable">시간표</string>
     <string name="title_study">스터디 플래너</string>
     <string name="title_reminder">리마인더</string>
+    <string name="title_timetable_selected">추가</string>
     <string name="title_credit">만든 사람들</string>
 </resources>

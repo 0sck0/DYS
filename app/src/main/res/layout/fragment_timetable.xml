@@ -3,38 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".TimetableFragment">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:orientation="vertical">
+            android:layout_marginRight="5dp">
 
             <!-- 요일 표시 -->
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.01">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="10dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.3"
                     android:text=""
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS" />
+                    android:textSize="12dp" />
 
                 <!-- 월 -->
                 <TextView
@@ -43,7 +38,7 @@
                     android:layout_weight="3"
                     android:text="월"
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
                 <!-- 화 -->
                 <TextView
@@ -52,7 +47,7 @@
                     android:layout_weight="3"
                     android:text="화"
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
                 <!-- 수 -->
                 <TextView
@@ -61,7 +56,7 @@
                     android:layout_weight="3"
                     android:text="수"
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
                 <!-- 목 -->
                 <TextView
@@ -70,7 +65,7 @@
                     android:layout_weight="3"
                     android:text="목"
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
                 <!-- 금 -->
                 <TextView
@@ -79,27 +74,29 @@
                     android:layout_weight="3"
                     android:text="금"
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.01">
 
                 <TextView
-                    android:layout_width="20dp"
+                    android:layout_width="10dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="0.3"
                     android:text=""
-                    android:textSize="15dp" />
+                    android:textSize="12dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_width="1dp"
+                    android:layout_width="10dp"
                     android:layout_height="match_parent"
-                    android:background="@color/colorDYS" />
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:text=""
+                    android:textSize="12dp" />
 
                 <!-- 월 날짜 -->
                 <TextView
@@ -109,7 +106,7 @@
                     android:layout_weight="3"
                     android:text=""
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
 
                 <!-- 화 날짜 -->
@@ -120,7 +117,7 @@
                     android:layout_weight="3"
                     android:text=""
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
 
                 <!-- 수 날짜 -->
@@ -131,7 +128,7 @@
                     android:layout_weight="3"
                     android:text=""
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
 
                 <!-- 목 날짜 -->
@@ -142,7 +139,7 @@
                     android:layout_weight="3"
                     android:text=""
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
 
                 <!-- 금 날짜 -->
@@ -153,8 +150,16 @@
                     android:layout_weight="3"
                     android:text=""
                     android:textAlignment="center"
-                    android:textSize="15dp"
+                    android:textSize="12dp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.3"
+                    android:text=""
+                    android:textSize="12dp" />
 
             </TableRow>
 
@@ -169,645 +174,13 @@
                     android:text=""/>
 
             </TableRow>
-
-            <!--0-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="8"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS" />
-
-                <TextView
-                    android:id="@+id/monday0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--1-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="9"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--2-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="10"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--3-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="11"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--4-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="12"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--5-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="1"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--6-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="2"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--7-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--8-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="4"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--9-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="5"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
-            <!--10-->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="15dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:gravity="right"
-                    android:text="6"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorDYS"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/monday10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/tuseday10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/wednesday10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/thursday10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/friday10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:textSize="15dp" />
-            </TableRow>
-
         </TableLayout>
+
+        <com.github.eunsiljo.timetablelib.view.TimeTableView
+        android:id="@+id/timeTable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
     </LinearLayout>
 

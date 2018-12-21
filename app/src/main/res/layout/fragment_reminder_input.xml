@@ -3,11 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="30dp"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,66 +17,67 @@
 
         <EditText
             android:id="@+id/title_reminder"
-            android:layout_width="120dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp" />
+            android:paddingTop="10dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="30dp"
             android:text="메모" />
 
         <EditText
             android:id="@+id/memo_reminder"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp"
+            android:paddingTop="10dp"
             android:hint="예시) 우유 사기" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="30dp"
             android:text="조건" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
 
             <ImageButton
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginLeft="30dp"
                 android:layout_marginTop="12dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/clock"
                 android:id="@+id/ring_reminder"/>
 
             <EditText
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="false"
                 android:id="@+id/date_reminder"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
             <Button
                 android:id="@+id/cancel_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="80dp"
+                android:layout_margin="63dp"
                 android:layout_weight="1"
-                android:background="@android:drawable/ic_delete" />
+                android:background="@android:drawable/ic_delete"/>
 
             <Button
                 android:id="@+id/save_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="80dp"
+                android:layout_margin="63dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/ic_input_add" />
         </LinearLayout>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lvText"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="색상 선택"
+            android:textAlignment="center"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:columnCount="4"
+            android:rowCount="2"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/color1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_1_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_2_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_3_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_4_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_5_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color6"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_6_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_7_light"
+                android:onClick="colorClick"/>
+
+            <Button
+                android:id="@+id/color8"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@color/color_table_8_light"
+                android:onClick="colorClick"/>
+
+        </GridLayout>
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

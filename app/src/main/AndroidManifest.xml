@@ -28,6 +28,14 @@
         <service
             android:name=".AlarmPlayService"
             android:enabled="true"></service>
+        <!--Timetable-->
+        <activity android:name=".TimetableSelected"/>
+        <activity android:name=".TimetableSelectedListView"
+            android:theme="@style/NoTitleDialog"
+            android:screenOrientation="unspecified"/>
+        <activity android:name=".TimetableSelectedColor"
+            android:theme="@style/NoTitleDialog"
+            android:screenOrientation="unspecified"/>
     </application>
 
 </manifest>
