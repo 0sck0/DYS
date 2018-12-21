@@ -3,7 +3,6 @@ package com.koreatech.dys.dys;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -14,6 +13,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,14 +99,42 @@ public class Reminder_input_Fragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    final Calendar c = Calendar.getInstance();
+    final DatePickerDialogFragment datePicker = DatePickerDialogFragment.newInstance(
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH),
+            c.get(Calendar.DAY_OF_MONTH));
+    DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            eYear = year;
+            eMonth = month;
+            eDay = dayOfMonth;
+            updateDate();
+            final boolean is24Hours = DateFormat.is24HourFormat(view.getContext());
+            final TimePickerDialogFragment timePicker = TimePickerDialogFragment.newInstance(
+                    c.get(Calendar.HOUR_OF_DAY),
+                    c.get(Calendar.MINUTE),
+                    is24Hours);
 
+            TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    ehour = hourOfDay;
+                    eminute = minute;
+                    updateDate();
+                }
+            };
+            timePicker.setListener(timePickerListener);
+            timePicker.showNow(getChildFragmentManager(), null);
+        }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reminder_input, container, false);
         alarm_manager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
         final Intent my_intent = new Intent(getActivity().getApplicationContext(), Alarm_Reciver.class);
-
         reminderDB = new DBclass(getActivity().getApplicationContext());
         try {
             db = reminderDB.getWritableDatabase();
@@ -128,10 +156,14 @@ public class Reminder_input_Fragment extends Fragment {
         //현재 액티비티를 취소하거나 저장하는 버튼 //온클릭 리스너 만들어주고, 거기에는 인텐트 처리와 파일처리 코드를 넣을 예정.
         cancel_reminder = (Button) view.findViewById(R.id.cancel_reminder);
         save_reminder = (Button) view.findViewById(R.id.save_reminder);
-        Intent intent  = getActivity().getIntent();
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            recieve_title = bundle.getString("title");
+            isModify = bundle.getBoolean("isModify");
+        }
+
         //새로운 일정을 생성하는건지, 기존 일정을 수정하는건지를 판단하는 코드
-        if((isModify = intent.getBooleanExtra("isModify",false))) {
-            recieve_title = intent.getStringExtra("title");
+        if(isModify) {
             cursor = db.rawQuery("SELECT title, memo, end_date FROM reminder " +
                     "WHERE title='" + recieve_title + "';", null);
             // 반환된 커서에 ResultSets의 행의 개수가 0개일 경우
@@ -155,8 +187,8 @@ public class Reminder_input_Fragment extends Fragment {
         ePickDate.setOnClickListener((new View.OnClickListener(){
             public void onClick(View v)
             {
-                switch1 = 1;
-                getActivity().showDialog(DATE_DIALOG_ID);
+                datePicker.setListener(datePickerListener);
+                datePicker.showNow(getChildFragmentManager(), null);
             }
         }));
 
@@ -322,51 +354,6 @@ public class Reminder_input_Fragment extends Fragment {
             return String.valueOf(c);
         else
             return "0" + String.valueOf(c);
-    }
-
-    //날짜를 선택했을 때 그에 따른
-
-    DatePickerDialog.OnDateSetListener mDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-
-                    eYear = year;
-                    eMonth = monthOfYear;
-                    eDay = dayOfMonth;
-                    updateDate();
-                }
-            };
-
-
-    // 시간 선택
-    TimePickerDialog.OnTimeSetListener mTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                    ehour = hourOfDay;
-                    eminute = minute;
-                    updateDate();
-                }
-            };
-
-    //    @Override
-    protected Dialog onCreateDialog(int id) {
-        Log.v(Integer.toString(id), " : 1");
-
-        switch (id) {
-            case DATE_DIALOG_ID: {
-                return new DatePickerDialog(getActivity(),
-                        mDateSetListener,
-                        eYear, eMonth, eDay);
-            }
-            case TIME_DIALOG_ID: {
-                return new TimePickerDialog(getActivity(),
-                        mTimeSetListener, ehour, eminute, false);
-            }
-        }
-        return null;
     }
     private void goAlarm()
     {

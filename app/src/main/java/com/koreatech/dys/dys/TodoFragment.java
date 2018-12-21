@@ -1,6 +1,5 @@
 package com.koreatech.dys.dys;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -147,7 +146,7 @@ public class TodoFragment extends Fragment
         }
         renm = adapter.getCursor().getString(2);
         // 컨텍스트 액션 모드 시작
-        mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(mActionModeCallback);
+        mActionMode = ((AppCompatActivity) getActivity()).startSupportActionMode(this);
         view.setSelected(true);
         return true;
     }

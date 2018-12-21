@@ -1,6 +1,5 @@
 package com.koreatech.dys.dys;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -79,9 +78,6 @@ public class ReminderFragment extends Fragment
         } catch (SQLiteException ex) {
             db = reminderDB.getReadableDatabase();
         }
-        //xml파일에는 id가 list인 리스트뷰가 코딩되어 있으므로 그 뷰를 변수에 이어준다.
-        m_ListView = (ListView) view.findViewById(R.id.list_reminder);
-        //처음 앱이 실행될때, 정해진 경로의 폴더(나는 내부저장소로 정햇다)에 있는 파일들을 File 배열
         m_ListView = (ListView) view.findViewById(R.id.list_reminder);
         refresh_list();
         //이때 item들을 눌러서 웹사이트를 연결하기 위한 이벤트리스너를 설정한다.

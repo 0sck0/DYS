@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,6 +97,52 @@ public class TodoInputFragment extends Fragment {
 
         setHasOptionsMenu(true);
     }
+    final Calendar c = Calendar.getInstance();
+    final DatePickerDialogFragment datePicker = DatePickerDialogFragment.newInstance(
+            c.get(Calendar.YEAR),
+            c.get(Calendar.MONTH),
+            c.get(Calendar.DAY_OF_MONTH));
+    DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            if(switch1 == 0)
+            {
+                sYear = year;
+                sMonth = month;
+                sDay = dayOfMonth;
+            }
+            else
+            {
+                eYear = year;
+                eMonth = month;
+                eDay = dayOfMonth;
+            }
+            updateDate();
+            final boolean is24Hours = DateFormat.is24HourFormat(view.getContext());
+            final TimePickerDialogFragment timePicker = TimePickerDialogFragment.newInstance(
+                    c.get(Calendar.HOUR_OF_DAY),
+                    c.get(Calendar.MINUTE),
+                    is24Hours);
+
+            TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    if(switch1 == 0) {
+                        shour = hourOfDay;
+                        sminute = minute;
+                    }
+                    else
+                    {
+                        ehour = hourOfDay;
+                        eminute = minute;
+                    }
+                    updateDate();
+                }
+            };
+            timePicker.setListener(timePickerListener);
+            timePicker.showNow(getChildFragmentManager(), null);
+        }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,7 +159,12 @@ public class TodoInputFragment extends Fragment {
         } catch (SQLiteException ex) {
             db = todoDB.getReadableDatabase();
         }
-        Intent intent  = getActivity().getIntent();
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            recieve_title = bundle.getString("title");
+            isModify = bundle.getBoolean("isModify");
+        }
         //텍스트로 선택한 일정 보여주는 변수
         sDateDisplay = (TextView) view.findViewById(R.id.start_date_todo);
         eDateDisplay = (TextView) view.findViewById(R.id.end_date_todo);
@@ -133,14 +185,16 @@ public class TodoInputFragment extends Fragment {
             public void onClick(View v)
             {
                 switch1 = 0;
-                getActivity().showDialog(DATE_DIALOG_ID);
+                datePicker.setListener(datePickerListener);
+                datePicker.showNow(getChildFragmentManager(), null);
             }
         });
         ePickDate.setOnClickListener((new View.OnClickListener(){
             public void onClick(View v)
             {
                 switch1 = 1;
-                getActivity().showDialog(DATE_DIALOG_ID);
+                datePicker.setListener(datePickerListener);
+                datePicker.showNow(getChildFragmentManager(), null);
             }
         }));
         //스위치 버튼 이벤트 리스너
@@ -268,8 +322,7 @@ public class TodoInputFragment extends Fragment {
             }
         });
         //새로운 일정을 생성하는건지, 기존 일정을 수정하는건지를 판단하는 코드
-        if((isModify = intent.getBooleanExtra("isModify",false))) {
-            recieve_title = intent.getStringExtra("title");
+        if(isModify) {
             cursor = db.rawQuery("SELECT * FROM todo " +
                     "WHERE title='" + recieve_title + "';", null);
             // 반환된 커서에 ResultSets의 행의 개수가 0개일 경우

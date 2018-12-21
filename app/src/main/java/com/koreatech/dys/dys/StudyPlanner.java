@@ -1,7 +1,6 @@
 package com.koreatech.dys.dys;
 
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -11,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +75,7 @@ public class StudyPlanner extends Fragment {
     private PendingIntent pendingIntent;
     static final int TIME_DIALOG_ID = 1;
 
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -109,6 +110,7 @@ public class StudyPlanner extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup contatiner,
                              Bundle savedInstanceState)
@@ -131,9 +133,9 @@ public class StudyPlanner extends Fragment {
         //calendar.add(Calendar.DAY_OF_MONTH, 2);
         List<EventDay> events = new ArrayList<>();
         CalendarView calendarView;
-        onSetIcon(events);
-        calendarView = view.findViewById(R.id.calendarView);
 
+        calendarView = view.findViewById(R.id.calendarView);
+        onSetIcon(events, calendarView);
         //처음 날짜를 오늘로 초기화하는 함수
         set_date();
 
@@ -244,7 +246,30 @@ public class StudyPlanner extends Fragment {
             @Override
             public void onClick(View v) {
                 switch1 = 0;
-                getActivity().showDialog(TIME_DIALOG_ID);
+                final Calendar c = Calendar.getInstance();
+                final boolean is24Hours = DateFormat.is24HourFormat(getContext());
+                final TimePickerDialogFragment timePicker = TimePickerDialogFragment.newInstance(
+                        c.get(Calendar.HOUR_OF_DAY),
+                        c.get(Calendar.MINUTE),
+                        is24Hours);
+
+                TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if(switch1 == 0) {
+                            shour = hourOfDay;
+                            sminute = minute;
+                        }
+                        else
+                        {
+                            ehour = hourOfDay;
+                            eminute = minute;
+                        }
+                        updateTime();
+                    }
+                };
+                timePicker.setListener(timePickerListener);
+                timePicker.showNow(getChildFragmentManager(), null);
             }
         });
         ePickTime = (Button) view.findViewById(R.id.end_timepicker);
@@ -252,7 +277,30 @@ public class StudyPlanner extends Fragment {
             @Override
             public void onClick(View v) {
                 switch1 = 1;
-                getActivity().showDialog(TIME_DIALOG_ID);
+                final Calendar c = Calendar.getInstance();
+                final boolean is24Hours = DateFormat.is24HourFormat(getContext());
+                final TimePickerDialogFragment timePicker = TimePickerDialogFragment.newInstance(
+                        c.get(Calendar.HOUR_OF_DAY),
+                        c.get(Calendar.MINUTE),
+                        is24Hours);
+
+                TimePickerDialog.OnTimeSetListener timePickerListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if(switch1 == 0) {
+                            shour = hourOfDay;
+                            sminute = minute;
+                        }
+                        else
+                        {
+                            ehour = hourOfDay;
+                            eminute = minute;
+                        }
+                        updateTime();
+                    }
+                };
+                timePicker.setListener(timePickerListener);
+                timePicker.showNow(getChildFragmentManager(), null);
             }
         });
 
@@ -300,7 +348,7 @@ public class StudyPlanner extends Fragment {
     }
 
     //위의 날짜들의 데이터를 텍스트뷰에 출력
-    private void updateDate()
+    private void updateTime()
     {
         if(switch1 == 0)
         {
@@ -319,22 +367,6 @@ public class StudyPlanner extends Fragment {
 
     }
 
-    // 시간 선택
-    TimePickerDialog.OnTimeSetListener mTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                    if (switch1 == 0) {
-                        shour = hourOfDay;
-                        sminute = minute;
-                    } else {
-                        ehour = hourOfDay;
-                        eminute = minute;
-                    }
-
-                    updateDate();
-                }
-            };
-
     //시간을 1분이면 01로 바꿔서 문자열로 바꿔주는 함수
     private static String pad(int c)
     {
@@ -342,14 +374,6 @@ public class StudyPlanner extends Fragment {
             return String.valueOf(c);
         else
             return "0" + String.valueOf(c);
-    }
-    protected Dialog onCreateDialog(int id) {
-        if (switch1 == 0)
-            return new TimePickerDialog(getActivity().getApplicationContext(),
-                    mTimeSetListener, shour, sminute, false);
-        else
-            return new TimePickerDialog(getActivity().getApplicationContext(),
-                    mTimeSetListener, ehour, eminute, false);
     }
     private void clear()
     {
@@ -360,13 +384,13 @@ public class StudyPlanner extends Fragment {
         ring_switch_checkState();
         title_study.setText("");
     }
-    private void onSetIcon(List<EventDay> events)
+    private void onSetIcon(List<EventDay> events, CalendarView calendarView)
     {
-        CalendarView calendarView = getActivity().findViewById(R.id.calendarView);
         Cursor cursor = db.rawQuery("SELECT date FROM study_planner;", null);
         cursor.moveToFirst();
         if(cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
+                Log.d("cursor ", cursor.getString(0));
                 String str[] = cursor.getString(0).split("/");
                 Calendar temp = new GregorianCalendar();
                 temp.set(Integer.parseInt(str[0]), Integer.parseInt(str[1]) - 1, Integer.parseInt(str[2]));
